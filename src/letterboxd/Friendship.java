@@ -28,6 +28,7 @@ public class Friendship {
     public int getCommonMovies() {
         Set<String> common = new HashSet<>(person1.likedMovies);
         common.retainAll(person2.likedMovies); // Retains only the elements in common
+        this.commonMovies = common.size();
         return common.size(); // Returns the count of common movies
     }
 

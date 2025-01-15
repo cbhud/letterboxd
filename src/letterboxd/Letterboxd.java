@@ -2,7 +2,7 @@ package letterboxd;
 
 import java.util.*;
 
-public class SocialNetwork {
+public class Letterboxd {
     LinkedList<Person> users = new LinkedList<>();
     List<String> availableMovies = new ArrayList<>();
 
@@ -26,7 +26,6 @@ public class SocialNetwork {
     public void addMovie(String movie) {
         if (!availableMovies.contains(movie)) {
             availableMovies.add(movie);
-            System.out.println("Movie added successfully: " + movie);
         } else {
             System.out.println("Movie already exists in the list.");
         }

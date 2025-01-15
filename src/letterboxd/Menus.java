@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Menus {
-    SocialNetwork socialNetwork = new SocialNetwork();
+    Letterboxd socialNetwork = new Letterboxd();
     Scanner sc = new Scanner(System.in);
 
     Menus(){
@@ -22,7 +22,6 @@ public class Menus {
     public void start() {
         boolean applicationRunning = true;
         
-        //dodajemo par filmova kako ne bismo svaki put
         socialNetwork.addMovie("Munich - The Edge of War");
         socialNetwork.addMovie("Bridge of Spies");
         socialNetwork.addMovie("The Spy Who Came in from the Cold");
@@ -171,21 +170,6 @@ public class Menus {
                 String display = friendship.person1.username + " - [" + commonMovies + "] - " + friendship.person2.username;
                 System.out.println(display);
             }
-        }
-    }
-
-
-
-    // Utility method to create a unique identifier for a friendship based on both persons' usernames.
-    private String getFriendshipIdentifier(Friendship friendship) {
-        String username1 = friendship.person1.username;
-        String username2 = friendship.person2.username;
-
-        // Ensure the identifier is consistent regardless of the order of the users
-        if (username1.compareTo(username2) < 0) {
-            return username1 + " - " + username2;
-        } else {
-            return username2 + " - " + username1;
         }
     }
 
