@@ -5,21 +5,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Test {
+public class Menus {
     SocialNetwork socialNetwork = new SocialNetwork();
     Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        new Test().start();
+    Menus(){
+    	start();
     }
 
     public void start() {
         boolean applicationRunning = true;
+        
+        //dodajemo par filmova kako ne bismo svaki put
+        socialNetwork.addMovie("Munich - The Edge of War");
+        socialNetwork.addMovie("Bridge of Spies");
+        socialNetwork.addMovie("The Spy Who Came in from the Cold");
+        socialNetwork.addMovie("The Imitation Game");
+        socialNetwork.addMovie("Argo");
+        socialNetwork.addMovie("Fury");
+        socialNetwork.addMovie("Tinker Tailor Soldier Spy");
 
         while (applicationRunning) {
             displayMenu();
@@ -57,8 +67,8 @@ public class Test {
         System.out.println("""
                 Please select one of the following options:
                 1. Add person to the social network
-                2. Add a movie to the list
-                3. Like a movie (select from available movies)
+                2. Add movie to the list
+                3. Like movie
                 4. Add friendship between two persons
                 5. Remove friendship between two persons
                 6. Suggest a new friend
@@ -118,18 +128,21 @@ public class Test {
         int totalCommonMovies = 0;
         int totalFriendships = 0;
 
-        // Map to store the number of common movies for each friendship
-        Map<String, Integer> friendshipCommonMovies = new HashMap<>();
+        // List to store the friendships and their common movies
+        List<Friendship> friendshipsBelowAverage = new ArrayList<>();
 
         // Calculate the total number of common movies and the total number of friendships
         for (Person person : socialNetwork.users) {
-            for (Person friend : person.friendships) {
+            for (Friendship friendship : person.friendships) {
                 // Avoid counting the same pair twice
-                if (person.username.compareTo(friend.username) < 0) {
-                    int commonMovies = calculateCommonMovies(person, friend);
-                    friendshipCommonMovies.put(person.username + " - " + friend.username, commonMovies);
+                String pairIdentifier = getFriendshipIdentifier(friendship);
+
+                if (!friendshipsBelowAverage.contains(friendship)) {
+                    int commonMovies = friendship.getCommonMovies();  // Get common movies from Friendship object
                     totalCommonMovies += commonMovies;
                     totalFriendships++;
+                    
+                    friendshipsBelowAverage.add(friendship);
                 }
             }
         }
@@ -145,12 +158,28 @@ public class Test {
         System.out.println("Friendships with below-average common liked movies:");
 
         // Display friendships with below-average common movies
-        for (Map.Entry<String, Integer> entry : friendshipCommonMovies.entrySet()) {
-            if (entry.getValue() < averageCommonMovies) {
-                System.out.println(entry.getKey() + " with " + entry.getValue() + " common movies.");
+        for (Friendship friendship : friendshipsBelowAverage) {
+            int commonMovies = friendship.getCommonMovies();
+            if (commonMovies < averageCommonMovies) {
+                System.out.println(friendship.person1.username + " - " + friendship.person2.username + " with " + commonMovies + " common movies.");
             }
         }
     }
+
+    // Utility method to create a unique identifier for a friendship based on both persons' usernames.
+    private String getFriendshipIdentifier(Friendship friendship) {
+        String username1 = friendship.person1.username;
+        String username2 = friendship.person2.username;
+
+        // Ensure the identifier is consistent regardless of the order of the users
+        if (username1.compareTo(username2) < 0) {
+            return username1 + " - " + username2;
+        } else {
+            return username2 + " - " + username1;
+        }
+    }
+
+
 
     private int calculateCommonMovies(Person person1, Person person2) {
         Set<String> commonMovies = new HashSet<>(person1.likedMovies);
@@ -171,18 +200,20 @@ public class Test {
     
     private void displayAllFriendships() {
         System.out.println("Displaying all friendships:");
-        
+
         for (Person person : socialNetwork.users) {
             System.out.print(person.username + " - ");
-            List<String> friendNames = new ArrayList<>();
-            
-            for (Person friend : person.friendships) {
-                friendNames.add(friend.username);
+            List<String> friendDetails = new LinkedList<>();
+
+            for (Friendship friendship : person.friendships) {
+                friendDetails.add(friendship.toString());
             }
-            
-            System.out.println(String.join(" - ", friendNames));
+
+            System.out.println(String.join(" - ", friendDetails));
         }
     }
+
+
     
     
 }

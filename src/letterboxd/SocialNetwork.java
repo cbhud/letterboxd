@@ -1,4 +1,5 @@
 package letterboxd;
+
 import java.util.*;
 
 public class SocialNetwork {
@@ -112,8 +113,4 @@ public class SocialNetwork {
             System.out.println("One or both users not found.");
         }
     }
-    
-    
-
-    
 }

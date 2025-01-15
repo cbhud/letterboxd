@@ -1,9 +1,8 @@
 package letterboxd;
+import java.util.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
-class Friendship {
+public class Friendship {
     Person person1;
     Person person2;
     int commonMovies;
@@ -15,8 +14,17 @@ class Friendship {
     }
 
     private int calculateCommonMovies() {
-        Set<String> common = new HashSet<>(person1.likedMovies);
-        common.retainAll(person2.likedMovies);
-        return common.size();
+        Set<String> commonMoviesSet = new HashSet<>(person1.likedMovies);
+        commonMoviesSet.retainAll(person2.likedMovies);
+        return commonMoviesSet.size(); 
+    }
+
+    public int getCommonMovies() {
+        return commonMovies;
+    }
+
+    @Override
+    public String toString() {
+        return person2.username + "[" + commonMovies + "] ";
     }
 }
