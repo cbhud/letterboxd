@@ -1,9 +1,11 @@
 package letterboxd;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -35,6 +37,7 @@ public class Test {
                     case 6 -> suggestNewFriend();
                     case 7 -> displayFriendshipsBelowAverage();
                     case 8 -> viewPersonDetails();
+                    case 9 -> displayAllFriendships();
                     default -> {
                         System.out.println("Application is closed.");
                         applicationRunning = false;
@@ -61,6 +64,7 @@ public class Test {
                 6. Suggest a new friend
                 7. Display friendships with below-average common movies
                 8. View person details
+                9. Adjacency List Display
                 Any other number: Close application
                 """);
     }
@@ -164,4 +168,21 @@ public class Test {
             System.out.println("User not found.");
         }
     }
+    
+    private void displayAllFriendships() {
+        System.out.println("Displaying all friendships:");
+        
+        for (Person person : socialNetwork.users) {
+            System.out.print(person.username + " - ");
+            List<String> friendNames = new ArrayList<>();
+            
+            for (Person friend : person.friendships) {
+                friendNames.add(friend.username);
+            }
+            
+            System.out.println(String.join(" - ", friendNames));
+        }
+    }
+    
+    
 }
