@@ -51,7 +51,7 @@ public class Person {
             result.append(friendship.toString()).append(", ");
         }
         
-        // Remove the last comma and space
+        // Da obrisemo zarez na kraju da ne ostaje od ", "
         if (result.length() > 0) {
             result.setLength(result.length() - 2);
         }

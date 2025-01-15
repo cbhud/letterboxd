@@ -131,18 +131,24 @@ public class Menus {
         // List to store the friendships and their common movies
         List<Friendship> friendshipsBelowAverage = new ArrayList<>();
 
+        // Set to store processed friendships to avoid duplicates
+        Set<String> processedPairs = new HashSet<>();
+
         // Calculate the total number of common movies and the total number of friendships
         for (Person person : socialNetwork.users) {
             for (Friendship friendship : person.friendships) {
-                // Avoid counting the same pair twice
-                String pairIdentifier = getFriendshipIdentifier(friendship);
+                // Create a unique pair identifier for the friendship
+                String pairIdentifier1 = friendship.person1.username + " - " + friendship.person2.username;
+                String pairIdentifier2 = friendship.person2.username + " - " + friendship.person1.username;
 
-                if (!friendshipsBelowAverage.contains(friendship)) {
+                // Check if the pair has already been processed
+                if (!processedPairs.contains(pairIdentifier1) && !processedPairs.contains(pairIdentifier2)) {
                     int commonMovies = friendship.getCommonMovies();  // Get common movies from Friendship object
                     totalCommonMovies += commonMovies;
                     totalFriendships++;
-                    
+
                     friendshipsBelowAverage.add(friendship);
+                    processedPairs.add(pairIdentifier1);  // Mark the pair as processed
                 }
             }
         }
@@ -161,10 +167,14 @@ public class Menus {
         for (Friendship friendship : friendshipsBelowAverage) {
             int commonMovies = friendship.getCommonMovies();
             if (commonMovies < averageCommonMovies) {
-                System.out.println(friendship.person1.username + " - " + friendship.person2.username + " with " + commonMovies + " common movies.");
+                // Format the output as friend1 - [noOfCommonMovies] - friend2
+                String display = friendship.person1.username + " - [" + commonMovies + "] - " + friendship.person2.username;
+                System.out.println(display);
             }
         }
     }
+
+
 
     // Utility method to create a unique identifier for a friendship based on both persons' usernames.
     private String getFriendshipIdentifier(Friendship friendship) {
