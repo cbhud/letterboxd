@@ -165,13 +165,13 @@ public class Letterboxd {
             	String pairId1 = friendship.person1.username + " - " + friendship.person2.username;
                 String pairId2 = friendship.person2.username + " - " + friendship.person1.username;
 
-                // Check if the pair has already been processed
+
                 if (!processedPairs.contains(pairId1) && !processedPairs.contains(pairId2)) {
-                    // Get common movies from Friendship object
+
                     totalCommonMovies += friendship.getCommonMovies();;
 
                     allFriendships.add(friendship);
-                    processedPairs.add(pairId1);  // Mark the pair as processed
+                    processedPairs.add(pairId1);
                 }
             }
         }
@@ -193,7 +193,6 @@ public class Letterboxd {
         for (Friendship friendship : allFriendships) {
             int commonMovies = friendship.getCommonMovies();
             if (commonMovies < averageCommonMovies) {
-                // Format the output as friend1 - [noOfCommonMovies] - friend2
                 String display = friendship.person1.username + " - [" + commonMovies + "] - " + friendship.person2.username;
                 System.out.println(display);
             }
@@ -205,6 +204,7 @@ public class Letterboxd {
     // sto ustvari predstavlja nasu listu lista tj Adjacency List
     public void displayAllFriendships() {
         System.out.println("Displaying all friendships:");
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 
         for (Person person : users) {
             System.out.print(person.username + " - ");
@@ -216,6 +216,7 @@ public class Letterboxd {
 
             System.out.println(String.join(" - ", friendDetails));
         }
+        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
     
       

@@ -5,16 +5,15 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menus {
-    Letterboxd socialNetwork = new Letterboxd();
+    
+	Letterboxd socialNetwork = new Letterboxd();
     Scanner sc = new Scanner(System.in);
-
     
     
     Menus(){
     	start();
     }
 
-    
     
     public void start() {
         
@@ -63,7 +62,7 @@ public class Menus {
     }
 
     
-    //Prikaz grafa preko 
+    //Prikaz grafa preko liste lista
     private void ajdacencyListDisplay() {
     	socialNetwork.displayAllFriendships();
 	}
@@ -117,7 +116,7 @@ public class Menus {
         socialNetwork.displayMovies();
         System.out.println("Select a movie by number:");
         int movieIndex = sc.nextInt();
-        sc.nextLine(); // Consume the newline character
+        sc.nextLine();
         socialNetwork.likeMovie(username, movieIndex);
     }
 
@@ -156,7 +155,7 @@ public class Menus {
         String username = sc.nextLine();
         Person person = socialNetwork.findUser(username);
         if (person != null) {
-            System.out.println(person);
+            System.out.println(person.toString());
         } else {
             System.out.println("User not found.");
         }
