@@ -32,18 +32,18 @@ public class Person {
     }
 
     
-    //O(1)
+    //O(n)
+    //Koristi java kolekciju removeIf tj da obrise ukoliko postoji u listi objekata prijateljstava
+    //brise obostrano osime removeIf mogli smo i for petljom da predjemo kroz liste medjutim zbog
+    //lakseg citanja koda iskoristili smo ovo
     public boolean removeFriend(Person friend) {
-
-    	if(friendships.contains(friend)) {
-    		this.friendships.remove(friend);
-    		friend.friendships.remove(this);
-    		return true;
-    	}
-    	
-    	return false;
-    	
+        boolean removed = friendships.removeIf(f -> f.person1 == this && f.person2 == friend);
+        if (removed) {
+            friend.friendships.removeIf(f -> f.person1 == friend && f.person2 == this);
+        }
+        return removed;
     }
+
 
     @Override
     public String toString() {

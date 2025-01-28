@@ -131,6 +131,7 @@ public class Letterboxd {
 
         if (person1 != null && person2 != null) {
             person1.removeFriend(person2);
+            person2.removeFriend(person1);
             System.out.println("Friendship removed " + username1 + " and " + username2);
         } else {
             System.out.println("One or both users not found.");
