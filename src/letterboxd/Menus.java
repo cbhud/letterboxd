@@ -1,27 +1,26 @@
 package letterboxd;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Menus {
     Letterboxd socialNetwork = new Letterboxd();
     Scanner sc = new Scanner(System.in);
 
+    
+    
     Menus(){
     	start();
     }
 
+    
+    
     public void start() {
-        boolean applicationRunning = true;
         
+        //filmove dodajemo kako bismo imali neki osnov
+    	//te da ne moramo da dodajemo filmove svaki put kada testiramo
+    	//svjesni smo da smo mogli da dodamo jos jednu klasu Test :)
         socialNetwork.addMovie("Munich - The Edge of War");
         socialNetwork.addMovie("Bridge of Spies");
         socialNetwork.addMovie("The Spy Who Came in from the Cold");
@@ -30,12 +29,12 @@ public class Menus {
         socialNetwork.addMovie("Fury");
         socialNetwork.addMovie("Tinker Tailor Soldier Spy");
 
-        while (applicationRunning) {
+        while (true) {
             displayMenu();
 
             try {
                 int result = sc.nextInt();
-                sc.nextLine(); // Consume the newline character
+                sc.nextLine();
 
                 switch (result) {
                     case 1 -> addPerson();
@@ -44,25 +43,40 @@ public class Menus {
                     case 4 -> addFriendship();
                     case 5 -> removeFriendship();
                     case 6 -> suggestNewFriend();
-                    case 7 -> displayFriendshipsBelowAverage();
+                    case 7 -> displayBelowAverage();
                     case 8 -> viewPersonDetails();
-                    case 9 -> displayAllFriendships();
+                    case 9 -> ajdacencyListDisplay();
                     default -> {
-                        System.out.println("Application is closed.");
-                        applicationRunning = false;
+                        System.out.println("Closed");
+                        return;
                     }
                 }
+                //Kako aplikacija ne bi crashovala u slucaju da korisnik slucajno unese string
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                sc.nextLine(); // Clear the invalid input
+                System.out.println("Invalid input Please enter a valid number");
+                sc.nextLine(); 
             } catch (Exception e) {
                 System.out.println("An unexpected error occurred. Please try again.");
-                sc.nextLine(); // Clear the invalid input
+                sc.nextLine();
             }
         }
     }
 
-    public void displayMenu() {
+    
+    //Prikaz grafa preko 
+    private void ajdacencyListDisplay() {
+    	socialNetwork.displayAllFriendships();
+	}
+
+	
+    
+    private void displayBelowAverage() {
+    	socialNetwork.displayFriendshipsBelowAverage();
+    }
+
+	
+	
+	public void displayMenu() {
         System.out.println("""
                 Please select one of the following options:
                 1. Add person to the social network
@@ -78,19 +92,25 @@ public class Menus {
                 """);
     }
 
-    private void addPerson() {
+    
+	
+	private void addPerson() {
         System.out.println("Enter username:");
         String username = sc.nextLine();
         socialNetwork.addUser(username);
         System.out.println("User added successfully.");
     }
 
+    
+    
     private void addMovie() {
         System.out.println("Enter movie name:");
         String movieName = sc.nextLine();
         socialNetwork.addMovie(movieName);
     }
 
+    
+    
     private void selectAndLikeMovie() {
         System.out.println("Enter username:");
         String username = sc.nextLine();
@@ -101,6 +121,8 @@ public class Menus {
         socialNetwork.likeMovie(username, movieIndex);
     }
 
+    
+    
     private void addFriendship() {
         System.out.println("Enter the first username:");
         String username1 = sc.nextLine();
@@ -109,6 +131,8 @@ public class Menus {
         socialNetwork.addFriendship(username1, username2);
     }
 
+    
+    
     private void removeFriendship() {
         System.out.println("Enter the first username:");
         String username1 = sc.nextLine();
@@ -117,61 +141,14 @@ public class Menus {
         socialNetwork.removeFriendship(username1, username2);
     }
 
+    
+    
     private void suggestNewFriend() {
         System.out.println("Enter username:");
         String username = sc.nextLine();
         socialNetwork.suggestNewFriendship(username);
     }
 
-    private void displayFriendshipsBelowAverage() {
-        int totalCommonMovies = 0;
-        int totalFriendships = 0;
-
-        // List to store the friendships and their common movies
-        List<Friendship> friendshipsBelowAverage = new ArrayList<>();
-
-        // Set to store processed friendships to avoid duplicates
-        Set<String> processedPairs = new HashSet<>();
-
-        // Calculate the total number of common movies and the total number of friendships
-        for (Person person : socialNetwork.users) {
-            for (Friendship friendship : person.friendships) {
-                // Create a unique pair identifier for the friendship
-                String pairIdentifier1 = friendship.person1.username + " - " + friendship.person2.username;
-                String pairIdentifier2 = friendship.person2.username + " - " + friendship.person1.username;
-
-                // Check if the pair has already been processed
-                if (!processedPairs.contains(pairIdentifier1) && !processedPairs.contains(pairIdentifier2)) {
-                    int commonMovies = friendship.getCommonMovies();  // Get common movies from Friendship object
-                    totalCommonMovies += commonMovies;
-                    totalFriendships++;
-
-                    friendshipsBelowAverage.add(friendship);
-                    processedPairs.add(pairIdentifier1);  // Mark the pair as processed
-                }
-            }
-        }
-
-        if (totalFriendships == 0) {
-            System.out.println("No friendships to analyze.");
-            return;
-        }
-
-        double averageCommonMovies = (double) totalCommonMovies / totalFriendships;
-
-        System.out.println("Average number of common liked movies: " + averageCommonMovies);
-        System.out.println("Friendships with below-average common liked movies:");
-
-        // Display friendships with below-average common movies
-        for (Friendship friendship : friendshipsBelowAverage) {
-            int commonMovies = friendship.getCommonMovies();
-            if (commonMovies < averageCommonMovies) {
-                // Format the output as friend1 - [noOfCommonMovies] - friend2
-                String display = friendship.person1.username + " - [" + commonMovies + "] - " + friendship.person2.username;
-                System.out.println(display);
-            }
-        }
-    }
 
 
     private void viewPersonDetails() {
@@ -185,22 +162,6 @@ public class Menus {
         }
     }
     
-    private void displayAllFriendships() {
-        System.out.println("Displaying all friendships:");
 
-        for (Person person : socialNetwork.users) {
-            System.out.print(person.username + " - ");
-            List<String> friendDetails = new LinkedList<>();
-
-            for (Friendship friendship : person.friendships) {
-                friendDetails.add(friendship.toString());
-            }
-
-            System.out.println(String.join(" - ", friendDetails));
-        }
-    }
-
-
-    
     
 }

@@ -6,7 +6,7 @@ import java.util.*;
 public class Person {
     String username;
     Set<String> likedMovies = new HashSet<>();
-    List<Friendship> friendships = new LinkedList<>();  // Change to list of Friendship objects
+    List<Friendship> friendships = new LinkedList<>();
 
     public Person(String username) {
         this.username = username;
@@ -17,30 +17,32 @@ public class Person {
     }
 
     public void addFriend(Person friend) {
-        // Check if friendship already exists
         for (Friendship friendship : friendships) {
+        	//kako bismo provjerili prijateljstvo sa obije strane
             if ((friendship.person1 == this && friendship.person2 == friend) ||
                 (friendship.person2 == this && friendship.person1 == friend)) {
-                return;  // Avoid adding duplicate friendships
+                return;
             }
         }
 
-        friendships.add(new Friendship(this, friend));  // Create new Friendship object
-        friend.addFriend(this);  // Add this user as a friend to the other person as well
+        //Kreiramo objekat i dodajemo prijateljstvo
+        friendships.add(new Friendship(this, friend));
+        //dodajemo prijateljstvo s druge strane
+        friend.addFriend(this);
     }
 
-    public void removeFriend(Person friend) {
-        friendships.removeIf(friendship -> 
-            (friendship.person1 == this && friendship.person2 == friend) || 
-            (friendship.person2 == this && friendship.person1 == friend)
-        );
-        friend.removeFriend(this);  // Remove this user from friend's friend list as well
-    }
+    
+    //O(1)
+    public boolean removeFriend(Person friend) {
 
-    private int calculateCommonMovies(Person person1, Person person2) {
-        Set<String> commonMovies = new HashSet<>(person1.likedMovies);
-        commonMovies.retainAll(person2.likedMovies);
-        return commonMovies.size();
+    	if(friendships.contains(friend)) {
+    		this.friendships.remove(friend);
+    		friend.friendships.remove(this);
+    		return true;
+    	}
+    	
+    	return false;
+    	
     }
 
     @Override
