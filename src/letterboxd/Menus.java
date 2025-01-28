@@ -174,13 +174,6 @@ public class Menus {
     }
 
 
-
-    private int calculateCommonMovies(Person person1, Person person2) {
-        Set<String> commonMovies = new HashSet<>(person1.likedMovies);
-        commonMovies.retainAll(person2.likedMovies);
-        return commonMovies.size();
-    }
-
     private void viewPersonDetails() {
         System.out.println("Enter username:");
         String username = sc.nextLine();
