@@ -45,6 +45,7 @@ public class Menus {
                     case 7 -> displayBelowAverage();
                     case 8 -> viewPersonDetails();
                     case 9 -> ajdacencyListDisplay();
+                    case 10 -> removeUser();
                     default -> {
                         System.out.println("Closed");
                         return;
@@ -72,6 +73,12 @@ public class Menus {
     private void displayBelowAverage() {
     	socialNetwork.displayFriendshipsBelowAverage();
     }
+    
+    private void removeUser() {
+        System.out.println("Enter username:");
+        String username = sc.nextLine();
+    	socialNetwork.removeUser(username);
+    }
 
 	
 	
@@ -87,6 +94,7 @@ public class Menus {
                 7. Display friendships with below-average common movies
                 8. View person details
                 9. Adjacency List Display
+                10. Remove User
                 Any other number: Close application
                 """);
     }

@@ -219,5 +219,37 @@ public class Letterboxd {
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
     
+    
+    public void removeUser(String username) {
+    	Person user = findUser(username);
+    	if(user == null) {
+    		System.out.println("User does not exists");
+    		return;
+    	}
+    	
+    	removeAllFriendships(user);
+    	
+    	user.friendships = null;
+    	user.likedMovies = null;
+    	users.remove(user);
+    	
+    	System.out.println("User successfully removed!");
+    
+    	
+    }
+    
+    
+    private void removeAllFriendships(Person user) {
+    	
+        for (Friendship friendship : user.friendships) {
+        	friendship.person2.removeFriend(user);
+        }
+    
+    }
+    
+    
+    
+    
+    
       
 }

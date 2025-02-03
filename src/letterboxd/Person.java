@@ -12,10 +12,14 @@ public class Person {
         this.username = username;
     }
 
+    
+    //O1
     public void likeMovie(String movie) {
         likedMovies.add(movie);
     }
 
+    
+    //O(N)
     public void addFriend(Person friend) {
         for (Friendship friendship : friendships) {
         	//kako bismo provjerili prijateljstvo sa obije strane
@@ -34,7 +38,7 @@ public class Person {
     
     //O(n)
     //Koristi java kolekciju removeIf tj da obrise ukoliko postoji u listi objekata prijateljstava
-    //brise obostrano osime removeIf mogli smo i for petljom da predjemo kroz liste medjutim zbog
+    //brise obostrano osim removeIf mogli smo i for petljom da predjemo kroz liste medjutim zbog
     //lakseg citanja koda iskoristili smo ovo
     public boolean removeFriend(Person friend) {
         boolean removed = friendships.removeIf(f -> f.person1 == this && f.person2 == friend);
