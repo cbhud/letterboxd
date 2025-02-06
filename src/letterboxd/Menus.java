@@ -18,8 +18,6 @@ public class Menus {
     public void start() {
         
         //filmove dodajemo kako bismo imali neki osnov
-    	//te da ne moramo da dodajemo filmove svaki put kada testiramo
-    	//svjesni smo da smo mogli da dodamo jos jednu klasu Test :)
         socialNetwork.addMovie("Munich - The Edge of War");
         socialNetwork.addMovie("Bridge of Spies");
         socialNetwork.addMovie("The Spy Who Came in from the Cold");
