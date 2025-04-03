@@ -1,266 +1,124 @@
-## UNIVERZITET „MEDITERAN“ PODGORICA
+## UNIVERSITY "MEDITERAN" PODGORICA
 
-## FAKULTET ZA INFORMACIONE TEHNOLOGIJE, PODGORICA
+## FACULTY OF INFORMATION TECHNOLOGY, PODGORICA
 
-# STRUKTURE PODATAKA I ALGORITMI
+# DATA STRUCTURES AND ALGORITHMS
 
-# Društvena mreža - Fimovi
+# Social Network - Movies
 
-Studenti: Profesor:
+Students: Professor:
 
-Ajša Dacić dr. Amar Kapić
+Ajša Dacić Dr. Amar Kapić
 
-Br. indeksa: 01 - 23
+Index No: 01 - 23
 
 Amer Hot
 
-Br. indeksa: 17 - 23
+Index No: 17 - 23
 
 ```
-Podgorica, januar 2025.
+Podgorica, January 2025.
 ```
 
-## Sadržaj:
+## Contents:
 
-- 1. Uvod
-- 2. Opis problema
-- 3. Opis Aplikacije
-   - 3.1 Implementacija grafa
-   - 3.2 Opis metoda za dodavanje, modifikaciju i brisanje podataka iz grafa
-   - 3.3 Opis dodatnih metoda
-- 4. Zaključak
+- 1. Introduction
+- 2. Problem Description
+- 3. Application Description
+   - 3.1 Graph Implementation
+   - 3.2 Description of Methods for Adding, Modifying, and Deleting Data from the Graph
+   - 3.3 Description of Additional Methods
+- 4. Conclusion
 
+## 1. Introduction
 
-## 1. Uvod
+This document describes the implementation of a social network system that allows users to receive movie recommendations based on their liked movies and connections with other users. The system is designed as a graph where nodes represent users, and edges represent their relationships and shared movies.
 
-Ovaj dokument opisuje implementaciju sistema za socijalnu mrežu koja omogućava korisnicima
-preporuke filmova na osnovu njihovih lajkovanih filmova i povezanosti sa drugim korisnicima.
-Sistem je osmišljen kao graf čiji čvorovi predstavljaju korisnike, dok ivice predstavljaju njihove
-međusobne odnose i zajedničke filmove.
+For implementation purposes, classes have been created to cover different aspects of the system, including users, friendships, and the network structure itself. Each class is described in detail, along with methods that enable adding, modifying, and displaying data. Additionally, advanced functionalities such as suggesting new friendships based on shared movies have been implemented.
 
-Za potrebe implementacije, kreirane su klase koje pokrivaju različite aspekte sistema, uključujući
-korisnike, prijateljstva, kao i samu strukturu mreže. Svaka klasa je detaljno opisana, zajedno sa
-metodama koje omogućavaju dodavanje, modifikaciju i prikaz podataka. Dodatno,
-implementirane su napredne funkcionalnosti poput predlaganja novih prijateljstava na osnovu
-zajedničkih filmova.
+The documentation is structured to explain key parts of the system step by step and the logic behind their implementation.
 
-Dokumentacija je strukturirana tako da korak po korak objašnjava ključne dijelove sistema i
-način njihove implementacije, uz poseban fokus na logiku.
+## 2. Problem Description
 
+The given task to solve is as follows:
 
-## 2. Opis problema
+“A graph representing 'friends' on a social network for movie recommendations.
 
-Zadatak koji smo dobili da riješimo glasi:
+For each person, the username and liked movies (only movie titles) are known.
+For each connection, it is known whether two people are friends and how many movies they have liked in common.
 
-“Graf koji predstavlja 'prijatelje' na socijalnoj mreži za preporuku filmova.
+a) Adding, modifying, and deleting data (analyze and implement all possibilities).
 
-Za svaku osobu zna se korisničko ime i koje je filmove lajkovala (samo nazivi filmova). Za
+b) A method that takes a username as an input argument and suggests a new friend (the person with whom they have the most shared movies but are not yet friends).
 
-svaki vezu zna se da li su dvije osobe prijatelji ili ne i koliko su istih filmova lajkovale.
+c) A method that displays all friend pairs who have fewer shared movies than the average number.”
 
-a) Dodavanje, modifikovanje i brisanje podataka (sve mogućnosti analizirati i
+We decided to solve this step by step, as described in detail below.
 
-implementirati)
+## 3. Application Description
 
-b) Metoda koja kao ulazni argument prima korisničko ime i predlaže osobi novo
+### 3.1 Graph Implementation
 
-prijateljstvo
-
-(osobu sa kojom ima najviše zajedničkih filmova, a nijesu prijatelji).
-
-c) Metoda koja prikazuje sve parove prijatelja koji imaju broj zajedničkih filmova manji od
-
-prosječnog.”
-
-Odlučili smo da ga riješimo korak po korak što je detaljno opisano u nastavku.
-
-
-## 3. Opis Aplikacije
-
-### 3.1 Implementacija grafa
-
-Na slici 1 nalazi se ideja Graf kojeg smo implementirali
+Below is an illustration of the implemented graph:
 
 ```
-Slika 1 - prva idjea grafa
-```
-Graf prestavlja klasa LetterBoxd koja ima listu korisnika.
-
-Svaki korisnik je čvor grafa (klasa Person), a povezan je Friendship objektom za ostale čvorove.
-
-Friendship objekat prestavlja ivice grafa koje su dvosmjerne i imaju težinu.
-
-Broj filmova koje su obje osobe lajkovale prestavlja težinu ivice.
-
-Prema zadatku:
-
-1. Za svaku osobu zna se korisničko ime i koje je filmove lajkovala (samo nazivi filmova).
-- Kreirana je klasa Osoba koja ima atribute: username (string), listu lajkovanih filmova
-    (HashSet stringova - naziva filmova) i listu prijatelja (LinkedListu objekata klase
-    Person).
-2. Za svaku vezu zna se da li su dvije osobe prijatelji ili ne i koliko su istih filmova
-    lajkovale.
-- Kreirana je klasa Friendship koja ima atribute: person1 i person2 (objekti klase Person) i
-    broj zajedničkih lajkovanih filmova (int).
-
-
-3. Graf koji predstavlja 'prijatelje' na društvenoj mreži za preporuku filmova.
-- Kreirana je klasa LetterBoxd po uzoru na postojeći sajt koji ima ideju sličnu našem
-
-```
-zadatku. U ovoj klasi atributi su: lista dostupnih filmova na aplikaciji (ArrayList) i lista
-svih korisnika (LinkedList). Ova klasa predstavlja osnovu grafa. Čvorovi našeg grafa su
-korisnici aplikacije, dok su veze ili ivice grafa predstavljene objektima Friendship koji
-povezuju korisnike jedne s drugima.
+Figure 1 - Initial Graph Idea
 ```
 
-### 3.2 Opis metoda za dodavanje, modifikaciju i brisanje podataka iz grafa
+The graph is represented by the `LetterBoxd` class, which contains a list of users.
 
-Opis prema zadatku:
+Each user is a graph node (class `Person`) and is connected via a `Friendship` object to other nodes.
 
-3 - a) Dodavanje, modifikovanje i brisanje podataka (sve mogućnosti analizirati i
-implementirati):
-Implementirane metode po klasama:
+The `Friendship` object represents the graph edges, which are bidirectional and have a weight.
 
-Person
+The number of movies both persons liked represents the edge weight.
 
-- likeMovie - void metoda kojoj je ulazni argument naziv filma. Ona nad listom
-    lajkovanih filmova poziva metodu add kojoj se prosljeđuje naziv filma.
-- addFriend - void metoda s ulaznim argumentom osobe koja se dodaje. Kroz for-each
-    petlju provjerava se da li prijateljstvo između osobe nad kojom je metoda pozvana i
-    osobe koja se dodaje postoji s bilo koje strane. Ukoliko ne postoji, u listu prijatelja se
-    dodaje novi objekat Friendship ove dvije osobe.
-- removeFriend - void metoda kojoj se prosljeđuje Person. Poziva se removeIf u
-    kojem se provjerava da li prijateljstvo postoji. Na kraju metode, iz liste prijatelja
-    proslijeđene osobe uklanja se osoba nad kojom se metoda poziva.
+According to the task:
 
-LetterBoxd
+1. Each person has a username and a list of liked movies (only movie titles).
+   - A `Person` class was created with the attributes: `username` (string), a list of liked movies (HashSet of strings - movie titles), and a list of friends (LinkedList of `Person` objects).
+2. Each connection records whether two people are friends and how many movies they have liked in common.
+   - A `Friendship` class was created with attributes: `person1` and `person2` (`Person` objects) and the number of shared liked movies (int).
 
-- findUser - Metoda koja vraća objekat klase Person, a kao ulazni argument traži
-    string username. Ova metoda ima for-each petlju koja prolazi kroz listu svih
-    korisnika i upoređuje uneseni username. Ukoliko se username nađe, vraća ga kao
-    string, a ako ne, vraća null.
-- addUser - void metoda koja kao ulazni argument prima string username i kroz if
-    statement ispituje da li metoda findUser vraća null. Ako je to slučaj, poziva se
-    metoda add i kreira novi objekat. U suprotnom, ispisuje odgovarajuću poruku.
-- addMovie - void metoda, ulazni argument je string koji predstavlja ime filma. Pošto
-    se filmovi nalaze u ArrayList, moguće je pozvati metodu contains u if uslovu tako da,
-    ako ta metoda vraća false, poziva se metoda add nad listom dostupnih filmova.
-    Ukoliko je true, metoda vraća odgovarajuću poruku.
-- displayMovies - void metoda koja preko for petlje ispisuje nazive dostupnih filmova.
-- likeMovie - void metoda koja kao ulazni argument prima korisnika koji lajkuje film i
-    indeks filma koji lajkuje. Ova metoda poziva metodu findUser. Ukoliko korisnik nije
-    pronađen, vraća null i izbacuje odgovarajuću poruku. Provjerom da li uneseni
-    indeks filma postoji, potvrđujemo da se film nalazi u listi i on se na kraju dodaje u
-    listu lajkovanih filmova te osobe pozivanjem metode likeMovie iz klase Person.
-- calculateCommonMovies - Metoda koja vraća int - broj zajedničkih filmova i kao
-    ulazne argumente unose se imena dvije osobe koje želimo uporediti. Kreiramo skup
-    stringova u čiji konstruktor unosimo lajkovane filmove prve osobe, zatim pozivamo
-    metodu retainAll nad kreiranim skupom i prosljeđujemo listu lajkovanih filmova
-    druge osobe. Ova metoda nam vraća skup koji predstavlja presjek ova dva skupa. Na
-    kraju, u return unosimo set.size() kako bi metoda vraćala samo broj zajedničkih
-    filmova kao int.
+3. A graph representing 'friends' on a social network for movie recommendations.
+   - The `LetterBoxd` class was created based on the existing website with a similar idea to our task.
+   - Attributes of this class include: a list of available movies in the application (ArrayList) and a list of all users (LinkedList). This class represents the graph's foundation. Nodes of our graph are application users, while edges are `Friendship` objects connecting users.
 
+### 3.2 Description of Methods for Adding, Modifying, and Deleting Data from the Graph
 
-- addFriendship - void metoda koja kao ulazni argument prima dva stringa -
-    korisnička imena dva korisnika. Prvo se pomoću metode findUser provjerava da li
-    oba korisnika postoje, zatim se nad obje osobe poziva metoda addFriend u koju
-    prosljeđujemo osobu jednu drugoj. Na kraju, ukoliko osobe ne postoje, program
-    ispisuje odgovarajuću poruku.
-- removeFriendship - Ova metoda radi na isti način kao i prethodna, osim što se
-    umjesto addFriend nad osobama poziva removeFriend.
+#### Implemented methods by class:
 
-Friendship
+#### Person
 
-- getCommonMovies - Ova metoda vraća int i radi na isti način kao i metoda
-    calculateCommonMovies, osim što direktno iz objekta Friendship uzima osobe koje
-    se u njemu nalaze.
+- `likeMovie(String movieName)`: Adds a movie to the liked movies list.
+- `addFriend(Person person)`: Adds a friend if they are not already friends.
+- `removeFriend(Person person)`: Removes a friend from the friend list.
 
+#### LetterBoxd
 
-### 3.3 Opis dodatnih metoda
+- `findUser(String username)`: Finds and returns a `Person` object by username.
+- `addUser(String username)`: Adds a new user if they do not already exist.
+- `addMovie(String movieName)`: Adds a movie to the available movies list.
+- `displayMovies()`: Displays available movies.
+- `likeMovie(String username, int movieIndex)`: Allows a user to like a movie.
+- `calculateCommonMovies(String user1, String user2)`: Returns the number of shared liked movies.
+- `addFriendship(String user1, String user2)`: Establishes a friendship between two users.
+- `removeFriendship(String user1, String user2)`: Removes a friendship.
 
-Opis prema zadatku:
+#### Friendship
 
-3 - b) Metoda koja kao ulazni argument prima korisničko ime i predlaže osobi novo
+- `getCommonMovies()`: Returns the number of shared liked movies between two friends.
 
-prijateljstvo (osobu s kojom ima najviše zajedničkih filmova, a nisu prijatelji).
+### 3.3 Description of Additional Methods
 
-- Kreirana je suggestNewFriendship - void metoda koja prima string koji predstavlja
-    korisničko ime korisnika kojem želimo predložiti prijatelja. Ponovo, pomoću metode
-    findUser, provjerava se postoji li korisnik. Inicijalizuje se predloženi prijatelj kao
-    objekat klase Person na null i int maxCommonMovies na 0. Kroz for-each petlju
-    prolazimo po listi korisnika, gdje novi objekat Person other upoređuje sve korisnike.
-    Pomoću if uslova osiguravamo da se osoba ne poredi sama sa sobom i da se ne
-    poredi s osobama koje su joj već prijatelji. Dalje, pozivanjem metode
-    calculateCommonMovies za unesenu osobu i osobu s kojom se upoređuje dobijamo
-    int koji označava broj njihovih zajedničkih filmova. U svakoj iteraciji, poređenjem s
-    maxCommonMovies, određuje se je li to novi maksimum ili ne, i suggestedFriend se
-    postavlja na other (osobu s kojom je maksimum filmova u tom trenutku). Poslije
-    toga, van for petlje, provjerava se da li je predloženi prijatelj null. Ukoliko nije,
-    program ispisuje odgovarajuću poruku, te predloženog prijatelja. U ostalim
-    slučajevima ispisuje se poruka o grešci.
+#### Friendship Suggestion
 
-3 - c) Metoda koja prikazuje sve parove prijatelja koji imaju broj zajedničkih filmova manji
+- `suggestNewFriendship(String username)`: Suggests a new friend based on the highest number of shared movies.
 
-od prosječnog.
+#### Display Friendships Below Average
 
-- Ovaj dio zadatka je riješen u klasi LetterBox, kao void metoda
-    displayFriendshipsBelowAverage. Opis:
+- `displayFriendshipsBelowAverage()`: Displays friend pairs who have fewer shared movies than the average.
 
-```
-o Prvo se inicijalizuju int-ovi totalCommonMovies, koji predstavlja ukupan broj
-zajedničkih filmova za sva prijateljstva, i totalFriendships, koji predstavlja
-ukupan broj prijateljstava, na 0.
-```
-```
-o Zatim se inicijalizuje Set lista allFriendships, koja predstavlja sva prijateljstva
-bez duplikata (jer su prijateljstva obostrana), i Set lista processedPairs, koja
-predstavlja parove koji su obrađeni (ovom listom se ograničava dupliranje
-prijateljstava u allFriendships).
-```
-```
-o Kroz ugniježđenu for-each petlju se za svaku osobu provjeravaju njeni
-prijatelji. Ta prijateljstva se unose u listu svih prijateljstava, a parovi se unose
-u listu obrađenih parova (ovi parovi se identifikuju preko stringova koji se
-kreiraju pri svakoj iteraciji). Na ovaj način obezbjeđuje se da parovi prijatelja
-budu jedinstveni, odnosno jedan par se neće ponoviti kada for petlja bude
-obrađivala drugu osobu tog prijateljstva. To je bitno za računanje prosjeka,
-jer bi u suprotnom broj prijateljstava bio duplo veći. Na kraju, posljednja
-```
+## 4. Conclusion
 
-```
-provjera osigurava da, ukoliko ne postoje prijateljstva, aplikacija izbaci
-odgovarajuću poruku.
-```
-```
-o Računa se prosjek zajedničkih filmova i for petljom, koja prolazi kroz sva
-prijateljstva, ispisuju se parovi čiji je broj zajedničkih filmova manji od
-prosjeka.
-```
-Dodatne metode i klase:
-
-Metode toString su prilagođene svakoj klasi kako bi ispis bio tačan.
-
-Metoda viewPersonDetails poziva toString metodu nad osobom koja se proslijedi kroz skener.
-
-U klasi Menu se nalaze metode koje korisniku u konzoli ispisuju moguće opcije dok aplikacija
-radi, traže unos broja za određenu opciju i pomoću switch-a pozivaju odgovarajuću metodu.
-
-U nastavku se nalaze slike menija i uotput-a u konzoli.
-
-```
-Slika glavnog menija
-```
-
-Slika-Lajkovanje Filma
-
-```
-Slika-prikaz grafa
-```
-
-## 4. Zaključak
-
-Ovaj rad predstavlja rješenje problema kreiranja društvene mreže za preporuku filmova,
-koja omogućava korisnicima da lajkuju filmove, povezuju se s drugim korisnicima kroz
-prijateljstva i dobijaju preporuke na osnovu zajedničkih interesa. Kroz implementaciju
-klasa Person, Friendship i LetterBox, obuhvaćeni su svi ključni zahtjevi zadatka.
+This project presents a solution for creating a social network for movie recommendations, allowing users to like movies, connect with other users through friendships, and receive recommendations based on shared interests. Through the implementation of the `Person`, `Friendship`, and `LetterBoxd` classes, all key requirements of the task have been covered.
