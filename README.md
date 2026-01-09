@@ -165,15 +165,3 @@ The project fulfills the assignment requirements and offers potential for furthe
 ```
 
 ---
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 💬 Feedback & Contributions
-
-Feel free to fork, open issues, or contribute!  
-We appreciate feedback and ideas for improving the project further.
-For any information contact me on discord: cbhud
